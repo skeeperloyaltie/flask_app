@@ -11,9 +11,49 @@ app = Flask(__name__)
 
 @app.route('/')
 def root():
-   return redirect(url_for('home'))
+   return redirect(url_for('login'))
 
+@app.route("/login")
+def login():
+       return render_template("login.html")
 
+@app.route("/log")
+def login():
+       try:
+          username = request.form['username']
+          password = request.form['password']
+          cur.execute("SELECT * FROM users WHERE username = ? AND password = ?",(username,password))
+          rows = cur.fetchall()
+          msg = "Successful Login"
+       
+         #  with sql.connect("database.db") as con:
+         #    cur = con.cursor()
+         #    cur.execute("INSERT INTO Product (productName,productDescription,QTY) VALUES (?,?,?)",(pn,pd,pq) )
+            
+         #    con.commit()
+         #    msg = "Record added"
+       except:
+          con.rollback()
+          msg = "error in operation"
+       finally:
+          con.close()
+          return render_template("home.html",msg = msg)
+       
+          
+   
+    
+@app.route("/register")
+def register():
+       try:
+          return render_template("register.html")
+       except:
+          con.rollback()
+          msg = "error in operation"
+       finally:
+          con.close()
+          return render_template("home.html",msg = msg)
+       
+          
 @app.route("/home")
 def home():
     return render_template('home.html')
