@@ -1,7 +1,8 @@
 drop table if exists users;
 
-create table users (
-  id integer primary key autoincrement,
+create table users 
+(
+  id integer primary key AUTOINCREMENT,
   name text not null,
   email text not null,
   password text not null,
