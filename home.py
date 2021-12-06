@@ -1,6 +1,7 @@
 from flask import Flask,render_template,redirect, url_for
 from flask import request
 import sqlite3 as sql
+from flask import session
 
 
 con = sql.connect("database.db",check_same_thread=False)
@@ -13,32 +14,29 @@ app = Flask(__name__)
 def root():
    return redirect(url_for('login'))
 
-@app.route("/login")
-def login():
-       return render_template("login.html")
-
-@app.route("/log")
+@app.route('/login')
 def login():
        try:
-          username = request.form['username']
-          password = request.form['password']
-          cur.execute("SELECT * FROM users WHERE username = ? AND password = ?",(username,password))
-          rows = cur.fetchall()
-          msg = "Successful Login"
-       
-         #  with sql.connect("database.db") as con:
-         #    cur = con.cursor()
-         #    cur.execute("INSERT INTO Product (productName,productDescription,QTY) VALUES (?,?,?)",(pn,pd,pq) )
-            
-         #    con.commit()
-         #    msg = "Record added"
+          
+          return render_template('home.html')
        except:
           con.rollback()
-          msg = "error in operation"
+          msg = "error in login"
        finally:
-          con.close()
-          return render_template("home.html",msg = msg)
-       
+          return redirect(url_for('home'))
+
+# @app.route("/home")
+# def log():   #login page
+#    try:
+#       return render_template("home.html")
+#       msg = "Successful Login"
+#    except:
+#       con.rollback()
+#       msg = "error in operation"
+#    finally:
+#       con.close()
+#       return render_template("home.html",msg = msg)
+      
           
    
     
